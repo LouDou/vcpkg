@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(imgui_node_editor VERSION 0.9.1 LANGUAGES CXX)
+project(imgui-node-editor VERSION 0.9.1 LANGUAGES CXX)
 
 set(CMAKE_DEBUG_POSTFIX d)
 
@@ -34,6 +34,12 @@ add_library(
         ${_imgui_node_editor_Sources}
 )
 
+target_sources(
+    ${PROJECT_NAME}
+    PRIVATE
+        ${_imgui_node_editor_Sources}
+)
+
 target_include_directories(
     ${PROJECT_NAME}
     PUBLIC
@@ -63,15 +69,25 @@ install(
 )
 
 if(NOT IMGUI_NODE_EDITOR_SKIP_HEADERS)
-  install(
-    FILES
-      ${CMAKE_CURRENT_SOURCE_DIR}/crude_json.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/imgui_bezier_math.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/imgui_canvas.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/imgui_extra_math.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/imgui_node_editor.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/imgui_node_editor_internal.h
-    DESTINATION include
-  )
-endif()
+    install(
+        FILES
+            ${CMAKE_CURRENT_SOURCE_DIR}/crude_json.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/imgui_bezier_math.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/imgui_canvas.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/imgui_extra_math.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/imgui_node_editor.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/imgui_node_editor_internal.h
+        DESTINATION include
+    )
+    
+    include(CMakePackageConfigHelpers)
+    configure_package_config_file(${PROJECT_NAME}-config.cmake.in ${PROJECT_NAME}-config.cmake INSTALL_DESTINATION share/${PROJECT_NAME})
 
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake DESTINATION share/${PROJECT_NAME})
+
+    install(
+        EXPORT ${PROJECT_NAME}_target
+        FILE ${PROJECT_NAME}-targets.cmake
+        DESTINATION share/${PROJECT_NAME}
+    )
+endif()

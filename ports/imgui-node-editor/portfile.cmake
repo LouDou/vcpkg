@@ -8,6 +8,7 @@ vcpkg_from_github(
     HEAD_REF develop
 )
 
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/imgui-node-editor-config.cmake.in DESTINATION ${SOURCE_PATH})
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt DESTINATION ${SOURCE_PATH})
 
 vcpkg_configure_cmake(

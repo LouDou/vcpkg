@@ -1,0 +1,9 @@
+cmake_policy(SET CMP0012 NEW)
+
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(imgui CONFIG)
+
+include("${CMAKE_CURRENT_LIST_DIR}/imgui-node-editor-targets.cmake")
